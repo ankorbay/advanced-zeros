@@ -1,13 +1,30 @@
 module.exports = function getZerosCount(number,base) {
+    let copynumber = number;
     let counter = 0;
     const prime=getMultipliers(base);
+    const numsOfSimPrimes = {};
+    const numOfZeros = [];
     const len = prime.length;
-    const lastPrime = prime[len-1]
-    const numOfsimilMult=prime.filter(num=>num===lastPrime).length;
-    while (number >= lastPrime) {
-        number = Math.floor(number / lastPrime);
-        counter += number;}
-    return Math.floor(counter/numOfsimilMult);
+    for (let i = 0; i < len; i++ ) {
+        if (prime[i] in numsOfSimPrimes) {
+            continue;
+        }
+        else {
+            numsOfSimPrimes[prime[i]]=prime.filter(num=>num===prime[i]).length;
+        }
+    }
+    for (let prime_key in numsOfSimPrimes) {
+        if (numsOfSimPrimes.hasOwnProperty(prime_key)){
+            let copynumber = number;
+            counter = 0;
+            while (copynumber >= parseInt(prime_key)) { //
+                copynumber = Math.floor(copynumber / parseInt(prime_key)); //
+                counter += copynumber;
+            }
+        numOfZeros.push(Math.floor(counter / numsOfSimPrimes[prime_key])); //
+        }    
+    }
+    return Math.min(...numOfZeros);
 }
 
 function getMultipliers(number){
